@@ -1,0 +1,1 @@
+Created new go module with 'go mod init gograd'
