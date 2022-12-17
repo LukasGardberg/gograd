@@ -7,6 +7,12 @@ import (
 func main() {
 	a := base.Value(2.0)
 	b := base.Value(3.0)
+	c := a.Pow(&b)
+	c.Backward()
 
-	fmt.Println(a.Mul(b).Backward())
+	c.Print()
+	fmt.Println("dc/dc:", c.Grad)
+	fmt.Println("dc/da:", a.Grad)
+	fmt.Println("dc/db:", b.Grad)
+	fmt.Println()
 }
