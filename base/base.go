@@ -18,12 +18,13 @@ type value struct {
 	Grad float64
 	_backward func (out *value) ()
 	// can't use 'value' as key in a map if we have a function field
-	_prev []*value
+	// _prev []*value
+	_prev map[*value]bool
 }
 
 
-func Value(x float64) value {
-	return value{Val: x, Grad: 0.0}
+func Value(x float64) *value {
+	return &value{Val: x, Grad: 0.0, _backward: func (out *value) {}, _prev: make(map[*value]bool)}
 }
 
 
@@ -32,9 +33,9 @@ func (a *value) Print() {
 }
 
 
-func (a *value) Add(b *value) value {
+func (a *value) Add(b *value) *value {
 	out := Value(a.Val + b.Val)
-	out._prev = append(out._prev, a, b)
+	out._prev[a], out._prev[b] = true, true
 
 	out._backward = func (out *value) () {
 		a.Grad += out.Grad
@@ -45,9 +46,9 @@ func (a *value) Add(b *value) value {
 }
 
 
-func (a *value) Sub(b *value) value {
+func (a *value) Sub(b *value) *value {
 	out := Value(a.Val - b.Val)
-	out._prev = append(out._prev, a, b)
+	out._prev[a], out._prev[b] = true, true
 
 	out._backward = func (out *value) () {
 		a.Grad += out.Grad
@@ -58,9 +59,9 @@ func (a *value) Sub(b *value) value {
 }
 
 
-func (a *value) Mul(b *value) value {
+func (a *value) Mul(b *value) *value {
 	out := Value(a.Val * b.Val)
-	out._prev = append(out._prev, a, b)
+	out._prev[a], out._prev[b] = true, true
 	
 	// In the case of c = a * b, c will here be 'out'
 	// so we need to make sure it's gradient is set to 1 in '_backward'
@@ -72,23 +73,23 @@ func (a *value) Mul(b *value) value {
 	return out
 }
 
-// wrong for d/db (a^b) = a^b * log(a) ?
-func (a *value) Pow(b *value) value {
-	out := Value(math.Pow(a.Val, b.Val))
-	out._prev = append(out._prev, a)
+// only floats for now, how would gradient update work for 'value's?
+func (a *value) Pow(b float64) *value {
+	out := Value(math.Pow(a.Val, b))
+	out._prev[a] = true
 
 	out._backward = func (out *value) () {
-		a.Grad += b.Val * math.Pow(a.Val, b.Val - 1) * out.Grad
-		
+		a.Grad += b * math.Pow(a.Val, b - 1) * out.Grad
+
 	}
 
 	return out
 }
 
 
-func (a *value) Div(b *value) value {
+func (a *value) Div(b *value) *value {
 	out := Value(a.Val / b.Val)
-	out._prev = append(out._prev, a, b)
+	out._prev[a], out._prev[b] = true, true
 
 	out._backward = func (out *value) () {
 		a.Grad += 1.0 / b.Val * out.Grad
@@ -103,7 +104,28 @@ func (a *value) Backward() {
 	a.Grad = 1.0
 	fmt.Printf("Called backward on %v\n", a)
 
-	// Hm, might have to do some stuff with pointers here...
-	// Not getting right result
-	a._backward(a)
+	topo := build_topo(a)
+	for i := len(topo) - 1; i >= 0; i-- {
+		topo[i]._backward(topo[i])
+	}
+}
+
+
+func build_topo (a *value) []*value {
+	var topo []*value
+	var seen = make(map[*value]bool)
+
+	var build func (a *value)
+	build = func (a *value) {
+		if !seen[a] {
+			seen[a] = true
+			for v := range a._prev {
+				build(v)
+			}
+			topo = append(topo, a)
+		}
+	}
+
+	build(a)
+	return topo
 }
