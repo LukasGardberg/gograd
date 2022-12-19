@@ -12,12 +12,16 @@ Inspired (entierly copied) from Karpathy's [micrograd](https://github.com/karpat
 
 Created new go module with 'go mod init gograd'
 
+cmd+k, shift+v to preview a .gv file.
+
 ### Todo
 
 - [x] Basic scalar operations
 - [x] Gradient tracking
 - [x] Backpropagation
 - [x] Topological sort
+- [ ] Add DAG visualization
+  - [ ] Add operator nodes
 - [ ] Add tests comparing results with an established autograd engine
 - [ ] Add tests as GitHub workflows (?)
 - [ ] Investigare implementation of general `Pow` operation

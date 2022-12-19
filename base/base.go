@@ -3,6 +3,9 @@ package base
 import (
 	"math"
 	"fmt"
+	"github.com/dominikbraun/graph"
+	"strconv"
+	"os"
 )
 
 /* Only accept float64 values?
@@ -100,7 +103,7 @@ func (a *value) Div(b *value) *value {
 }
 
 
-func (a *value) Backward() {
+func (a *value) Backward() []*value {
 	a.Grad = 1.0
 	fmt.Printf("Called backward on %v\n", a)
 
@@ -108,6 +111,8 @@ func (a *value) Backward() {
 	for i := len(topo) - 1; i >= 0; i-- {
 		topo[i]._backward(topo[i])
 	}
+
+	return topo
 }
 
 
@@ -128,4 +133,29 @@ func build_topo (a *value) []*value {
 
 	build(a)
 	return topo
+}
+
+
+func val_hash(v *value) string {
+	return strconv.FormatFloat(v.Val, 'f', 2, 64)
+}
+
+
+func Show_graph(topo []*value) {
+
+	g := graph.New(val_hash, graph.Directed(), graph.Acyclic())
+
+	for i := range topo {
+		g.AddVertex(topo[i])
+	}
+
+	for i := range topo {
+		for v := range topo[i]._prev {
+			g.AddEdge(val_hash(v), val_hash(topo[i]))
+		}
+	}
+
+	file, _ := os.Create("./my-graph.gv")
+	_ = DOT(g, file)
+
 }

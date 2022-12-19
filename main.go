@@ -9,6 +9,18 @@ func main() {
 	b := base.Value(3.0)
 	c := base.Value(4.0)
 	d := ((a.Pow(2.0).Mul(b).Add(c)).Div(b)).Pow(2.0)
+	topo := d.Backward()
+
+	base.Show_graph(topo)
+
+	fmt.Println(len(topo))
+}
+
+func test_1() {
+	a := base.Value(2.0)
+	b := base.Value(3.0)
+	c := base.Value(4.0)
+	d := ((a.Pow(2.0).Mul(b).Add(c)).Div(b)).Pow(2.0)
 	d.Backward()
 
 	d.Print()
