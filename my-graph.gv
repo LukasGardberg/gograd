@@ -1,15 +1,39 @@
 strict digraph {
 
-	"2.00*" [ label="*",  weight=0 ];
+	"60303c84-73cc-4a2d-af09-323ac5118bf4+" [ label="+",  weight=0 ];
 
-	"2.00*" -> "2.00" [  weight=0 ];
+	"60303c84-73cc-4a2d-af09-323ac5118bf4+" -> "60303c84-73cc-4a2d-af09-323ac5118bf4" [  weight=0 ];
 
-	"1.00" [ label="v: 1.00, grad: 2.00",  weight=0 ];
+	"febb4ae5-9f64-47be-93b2-16dc91326869" [ label="v: 2.00, grad: 8.00",  weight=0 ];
 
-	"1.00" -> "2.00*" [  weight=0 ];
+	"febb4ae5-9f64-47be-93b2-16dc91326869" -> "60303c84-73cc-4a2d-af09-323ac5118bf4+" [  weight=0 ];
 
-	"2.00" [ label="v: 2.00, grad: 1.00",  weight=0 ];
+	"60303c84-73cc-4a2d-af09-323ac5118bf4" [ label="v: 4.00, grad: 8.00",  weight=0 ];
 
-	"2.00" -> "2.00*" [  weight=0 ];
+	"60303c84-73cc-4a2d-af09-323ac5118bf4" -> "e228dd80-c74d-4338-bfcd-59c1c27fb822**" [  weight=0 ];
+
+	"4ed193a2-9405-4b54-99e2-e2b6c70dc5d1" [ label="v: 1.00, grad: 16.00",  weight=0 ];
+
+	"4ed193a2-9405-4b54-99e2-e2b6c70dc5d1" -> "febb4ae5-9f64-47be-93b2-16dc91326869*" [  weight=0 ];
+
+	"e228dd80-c74d-4338-bfcd-59c1c27fb822**" [ label="**",  weight=0 ];
+
+	"e228dd80-c74d-4338-bfcd-59c1c27fb822**" -> "e228dd80-c74d-4338-bfcd-59c1c27fb822" [  weight=0 ];
+
+	"e228dd80-c74d-4338-bfcd-59c1c27fb822" [ label="v: 16.00, grad: 1.00",  weight=0 ];
+
+	"3b545503-1bdb-43b2-8e59-3fbd360f5e9a" [ label="v: 2.00, grad: 16.00",  weight=0 ];
+
+	"3b545503-1bdb-43b2-8e59-3fbd360f5e9a" -> "febb4ae5-9f64-47be-93b2-16dc91326869*" [  weight=0 ];
+
+	"3b545503-1bdb-43b2-8e59-3fbd360f5e9a" -> "60303c84-73cc-4a2d-af09-323ac5118bf4+" [  weight=0 ];
+
+	"729c44b5-5a10-463a-b73f-5c077f73f5af" [ label="v: 2.00, grad: 0.00",  weight=0 ];
+
+	"729c44b5-5a10-463a-b73f-5c077f73f5af" -> "e228dd80-c74d-4338-bfcd-59c1c27fb822**" [  weight=0 ];
+
+	"febb4ae5-9f64-47be-93b2-16dc91326869*" [ label="*",  weight=0 ];
+
+	"febb4ae5-9f64-47be-93b2-16dc91326869*" -> "febb4ae5-9f64-47be-93b2-16dc91326869" [  weight=0 ];
 
 }

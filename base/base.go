@@ -4,9 +4,8 @@ import (
 	"math"
 	"fmt"
 	"github.com/dominikbraun/graph"
-	"strconv"
 	"os"
-	//"github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 /* Only accept float64 values?
@@ -21,17 +20,15 @@ type value struct {
 	Val float64
 	Grad float64
 	_backward func (out *value) ()
-	// can't use 'value' as key in a map if we have a function field
-	// _prev []*value
 	_prev map[*value]bool
 	_op string
 	_id string
 }
 
-// A new uuid needs to be generated for each value, and to be used in
-// building the compute graph
+
 func Value(x float64) *value {
-	return &value{Val: x, Grad: 0.0, _backward: func (out *value) {}, _prev: make(map[*value]bool)}
+	uuid := uuid.NewString()
+	return &value{Val: x, Grad: 0.0, _backward: func (out *value) {}, _prev: make(map[*value]bool), _id: uuid}
 }
 
 
@@ -85,13 +82,16 @@ func (a *value) Mul(b *value) *value {
 
 // only floats for now, how would gradient update work for 'value's?
 func (a *value) Pow(b float64) *value {
+	// 'pow' currently not accounted for in gradient caluculation
+	pow := Value(b)
+
 	out := Value(math.Pow(a.Val, b))
 	out._op = "**"
 	out._prev[a] = true
+	out._prev[pow] = true // add to prev for node in graph viz
 
 	out._backward = func (out *value) () {
 		a.Grad += b * math.Pow(a.Val, b - 1) * out.Grad
-
 	}
 
 	return out
@@ -114,8 +114,6 @@ func (a *value) Div(b *value) *value {
 
 func (a *value) Backward() {
 	a.Grad = 1.0
-	fmt.Printf("Called backward on %v\n", a)
-
 	topo := build_topo(a)
 	for i := len(topo) - 1; i >= 0; i-- {
 		topo[i]._backward(topo[i])
@@ -143,11 +141,6 @@ func build_topo (a *value) []*value {
 }
 
 
-func val_hash(v *value) string {
-	return strconv.FormatFloat(v.Val, 'f', 2, 64)
-}
-
-
 func Show_graph(root *value) {
 
 	nodes, edges := get_nodes_edges(root)
@@ -155,20 +148,18 @@ func Show_graph(root *value) {
 
 	for k := range nodes {
 		label := fmt.Sprintf("v: %.2f, grad: %.2f", k.Val, k.Grad)
-		g.AddVertex(val_hash(k), graph.VertexAttribute("label", label))
+		g.AddVertex(k._id, graph.VertexAttribute("label", label))
 
 		if k._op != "" {
-			g.AddVertex(val_hash(k) + k._op, graph.VertexAttribute("label", k._op))
-			g.AddEdge(val_hash(k) + k._op, val_hash(k))
+			g.AddVertex(k._id + k._op, graph.VertexAttribute("label", k._op))
+			g.AddEdge(k._id + k._op, k._id)
 		}
 	}
 
-	//add edges
 	for k := range edges {
 		a, b := (*k)[0], (*k)[1]
-		g.AddEdge(val_hash(a), val_hash(b) + b._op)
+		g.AddEdge(a._id, b._id + b._op)
 	}
-
 
 	file, _ := os.Create("./my-graph.gv")
 	_ = DOT(g, file)
@@ -185,7 +176,6 @@ func get_nodes_edges(root *value) (map[*value]bool, map[*[]*value]bool) {
 		if !nodes[a] {
 			nodes[a] = true
 			for v := range a._prev {
-				// add v and a to edges
 				e := []*value{v, a}
 				edges[&e] = true
 				build(v)

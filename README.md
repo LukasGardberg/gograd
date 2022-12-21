@@ -20,9 +20,11 @@ cmd+k, shift+v to preview a .gv file.
 - [x] Gradient tracking
 - [x] Backpropagation
 - [x] Topological sort
-- [ ] Add DAG visualization
-  - [ ] Add operator nodes
+- [x] Add DAG visualization
+  - [x] Add operator nodes
+- [ ] Create a proper directory & package structure
 - [ ] Add tests comparing results with an established autograd engine
+  - [x] Add basic non-comparative tests
 - [ ] Add tests as GitHub workflows (?)
 - [ ] Investigare implementation of general `Pow` operation
 - [ ] Add activation function(s)
