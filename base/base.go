@@ -6,6 +6,7 @@ import (
 	"github.com/dominikbraun/graph"
 	"strconv"
 	"os"
+	//"github.com/google/uuid"
 )
 
 /* Only accept float64 values?
@@ -23,9 +24,12 @@ type value struct {
 	// can't use 'value' as key in a map if we have a function field
 	// _prev []*value
 	_prev map[*value]bool
+	_op string
+	_id string
 }
 
-
+// A new uuid needs to be generated for each value, and to be used in
+// building the compute graph
 func Value(x float64) *value {
 	return &value{Val: x, Grad: 0.0, _backward: func (out *value) {}, _prev: make(map[*value]bool)}
 }
@@ -38,6 +42,7 @@ func (a *value) Print() {
 
 func (a *value) Add(b *value) *value {
 	out := Value(a.Val + b.Val)
+	out._op = "+"
 	out._prev[a], out._prev[b] = true, true
 
 	out._backward = func (out *value) () {
@@ -51,6 +56,7 @@ func (a *value) Add(b *value) *value {
 
 func (a *value) Sub(b *value) *value {
 	out := Value(a.Val - b.Val)
+	out._op = "-"
 	out._prev[a], out._prev[b] = true, true
 
 	out._backward = func (out *value) () {
@@ -64,6 +70,7 @@ func (a *value) Sub(b *value) *value {
 
 func (a *value) Mul(b *value) *value {
 	out := Value(a.Val * b.Val)
+	out._op = "*"
 	out._prev[a], out._prev[b] = true, true
 	
 	// In the case of c = a * b, c will here be 'out'
@@ -79,6 +86,7 @@ func (a *value) Mul(b *value) *value {
 // only floats for now, how would gradient update work for 'value's?
 func (a *value) Pow(b float64) *value {
 	out := Value(math.Pow(a.Val, b))
+	out._op = "**"
 	out._prev[a] = true
 
 	out._backward = func (out *value) () {
@@ -92,6 +100,7 @@ func (a *value) Pow(b float64) *value {
 
 func (a *value) Div(b *value) *value {
 	out := Value(a.Val / b.Val)
+	out._op = "/"
 	out._prev[a], out._prev[b] = true, true
 
 	out._backward = func (out *value) () {
@@ -103,7 +112,7 @@ func (a *value) Div(b *value) *value {
 }
 
 
-func (a *value) Backward() []*value {
+func (a *value) Backward() {
 	a.Grad = 1.0
 	fmt.Printf("Called backward on %v\n", a)
 
@@ -111,8 +120,6 @@ func (a *value) Backward() []*value {
 	for i := len(topo) - 1; i >= 0; i-- {
 		topo[i]._backward(topo[i])
 	}
-
-	return topo
 }
 
 
@@ -141,21 +148,51 @@ func val_hash(v *value) string {
 }
 
 
-func Show_graph(topo []*value) {
+func Show_graph(root *value) {
 
-	g := graph.New(val_hash, graph.Directed(), graph.Acyclic())
+	nodes, edges := get_nodes_edges(root)
+	g := graph.New(graph.StringHash, graph.Directed(), graph.Acyclic())
 
-	for i := range topo {
-		g.AddVertex(topo[i])
-	}
+	for k := range nodes {
+		label := fmt.Sprintf("v: %.2f, grad: %.2f", k.Val, k.Grad)
+		g.AddVertex(val_hash(k), graph.VertexAttribute("label", label))
 
-	for i := range topo {
-		for v := range topo[i]._prev {
-			g.AddEdge(val_hash(v), val_hash(topo[i]))
+		if k._op != "" {
+			g.AddVertex(val_hash(k) + k._op, graph.VertexAttribute("label", k._op))
+			g.AddEdge(val_hash(k) + k._op, val_hash(k))
 		}
 	}
+
+	//add edges
+	for k := range edges {
+		a, b := (*k)[0], (*k)[1]
+		g.AddEdge(val_hash(a), val_hash(b) + b._op)
+	}
+
 
 	file, _ := os.Create("./my-graph.gv")
 	_ = DOT(g, file)
 
+}
+
+
+func get_nodes_edges(root *value) (map[*value]bool, map[*[]*value]bool) {
+	var nodes = make(map[*value]bool)
+	var edges = make(map[*[]*value]bool)
+
+	var build func (a *value)
+	build = func (a *value) {
+		if !nodes[a] {
+			nodes[a] = true
+			for v := range a._prev {
+				// add v and a to edges
+				e := []*value{v, a}
+				edges[&e] = true
+				build(v)
+			}
+		}
+	}
+
+	build(root)
+	return nodes, edges
 }
