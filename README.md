@@ -23,7 +23,7 @@ cmd+k, shift+v to preview a .gv file.
 - [x] Add DAG visualization
   - [x] Add operator nodes
 - [ ] Create a proper directory & package structure
-- [ ] Add tests comparing results with an established autograd engine
+- [x] Add tests comparing results with an established autograd engine
   - [x] Add basic non-comparative tests
 - [ ] Add tests as GitHub workflows (?)
 - [ ] Investigare implementation of general `Pow` operation
