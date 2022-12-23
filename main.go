@@ -15,14 +15,3 @@ func main() {
 	fmt.Println(a.GetDerivative(0))
 	
 }
-// a := Value(2.0)
-// b := Value(1.0)
-// c := a.Mul(b)
-// d := c.Add(a)
-// e := d.Pow(2.0)
-
-// fmt.Printf("b: %v, c: %v\n", b, c)
-
-// e.Backward()
-
-// Show_graph(e)
