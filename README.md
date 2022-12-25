@@ -22,14 +22,18 @@ cmd+k, shift+v to preview a .gv file.
 - [x] Topological sort
 - [x] Add DAG visualization
   - [x] Add operator nodes
-- [ ] Create a proper directory & package structure
+- [x] Create a proper directory & package structure
 - [x] Add tests comparing results with an established autograd engine
   - [x] Add basic non-comparative tests
-- [ ] Add tests as GitHub workflows (?)
+- [x] Add tests as GitHub workflows
+  - [ ] Research what other tests might be useful
+- [ ] Add examples of usage
+- [ ] Add documentation
 - [ ] Investigare implementation of general `Pow` operation
 - [ ] Add activation function(s)
 - [ ] Add example of NN training
-- [ ] Add overhead to enable import as a Go package
+- [x] Add overhead to enable import as a Go package
+  - [ ] Make new release without `main.go`
 
 ---
 
