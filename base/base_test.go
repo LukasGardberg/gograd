@@ -2,6 +2,7 @@ package base
 
 import (
 	"testing"
+
 	ad "github.com/pbenner/autodiff"
 )
 
@@ -79,7 +80,6 @@ func TestBackward(t *testing.T) {
 	}
 }
 
-
 func TestComparison(t *testing.T) {
 	// compare derivatives of a * b
 
@@ -108,7 +108,6 @@ func TestComparison(t *testing.T) {
 		t.Errorf("Expected gradient to be %f, got %f", ad_res2, gograd_res2)
 	}
 }
-
 
 // Compare a more complex derivative
 func TestComparison2(t *testing.T) {
@@ -150,7 +149,7 @@ func TestComparison3(t *testing.T) {
 	a := ad.NewReal64(2.0)
 	b := ad.NewReal64(3.0)
 	ad.Variables(1, a, b)
-	
+
 	a.Pow(a, ad.NewConstFloat64(3.0))
 	a.Mul(a, ad.NewConstFloat64(2.0))
 	b.Div(b, ad.NewConstFloat64(3.0))

@@ -1,24 +1,29 @@
 // ** Adopted from https://github.com/dominikbraun/graph/blob/main/draw/draw.go **
 
-// Package draw provides functions for visualizing graph structures. At this time, draw supports
-// the DOT language which can be interpreted by Graphviz, Grappa, and others.
 package base
 
 import (
 	"fmt"
 	"io"
+	"os"
 	"text/template"
 
 	"github.com/dominikbraun/graph"
 )
 
-// ToDo: This template should be simplified and split into multiple templates.
-const dotTemplate = `strict {{.GraphType}} {
-{{range $s := .Statements}}
-	"{{.Source}}" {{if .Target}}{{$.EdgeOperator}} "{{.Target}}" [ {{range $k, $v := .EdgeAttributes}}{{$k}}="{{$v}}", {{end}} weight={{.EdgeWeight}} ]{{else}}[ {{range $k, $v := .SourceAttributes}}{{$k}}="{{$v}}", {{end}} weight={{.SourceWeight}} ]{{end}};
-{{end}}
-}
-`
+// const dotTemplate = `strict {{.GraphType}} {
+// {{range $s := .Statements}}
+// 	"{{.Source}}" {{if .Target}}{{$.EdgeOperator}} "{{.Target}}" [ {{range $k, $v := .EdgeAttributes}}{{$k}}="{{$v}}", {{end}} weight={{.EdgeWeight}} ]{{else}}[ {{range $k, $v := .SourceAttributes}}{{$k}}="{{$v}}", {{end}} weight={{.SourceWeight}} ]{{end}};
+// {{end}}
+// }
+// `
+
+// Added LR direction, record node shape
+const dotTemplate = `strict {{.GraphType}} { 
+	rankdir=LR; {{range $s := .Statements}} 
+	"{{.Source}}" {{if .Target}}{{$.EdgeOperator}} "{{.Target}}" [ {{range $k, $v := .EdgeAttributes}}{{$k}}="{{$v}}, {{end}} weight={{.EdgeWeight}} ]{{else}}[ {{range $k, $v := .SourceAttributes}}{{$k}}="{{$v}}", {{end}} shape=record, weight={{.SourceWeight}} ]{{end}}; 
+	{{end}} }
+	`
 
 type description struct {
 	GraphType    string
@@ -35,31 +40,6 @@ type statement struct {
 	EdgeAttributes   map[string]string
 }
 
-// DOT renders the given graph structure in DOT language into an io.Writer, for example a file. The
-// generated output can be passed to Graphviz or other visualization tools supporting DOT.
-//
-// The following example renders a directed graph into a file my-graph.gv:
-//
-//	g := graph.New(graph.IntHash, graph.Directed())
-//
-//	_ = g.AddVertex(1)
-//	_ = g.AddVertex(2)
-//	_ = g.AddVertex(3, graph.VertexAttribute("style", "filled"), graph.VertexAttribute("fillcolor", "red"))
-//
-//	_ = g.AddEdge(1, 2, graph.EdgeWeight(10), graph.EdgeAttribute("color", "red"))
-//	_ = g.AddEdge(1, 3)
-//
-//	file, _ := os.Create("./my-graph.gv")
-//	_ = draw.DOT(g, file)
-//
-// To generate an SVG from the created file using Graphviz, use a command such as the following:
-//
-//	dot -Tsvg -O my-graph.gv
-//
-// Another possibility is to use os.Stdout as an io.Writer, print the DOT output to stdout, and
-// pipe it as follows:
-//
-//	go run main.go | dot -Tsvg > output.svg
 func DOT[K comparable, T any](g graph.Graph[K, T], w io.Writer) error {
 	desc, err := generateDOT(g)
 	if err != nil {
@@ -120,4 +100,49 @@ func renderDOT(w io.Writer, d description) error {
 	}
 
 	return tpl.Execute(w, d)
+}
+
+func Show_graph(root *value) {
+
+	nodes, edges := get_nodes_edges(root)
+	g := graph.New(graph.StringHash, graph.Directed(), graph.Acyclic())
+
+	for k := range nodes {
+		label := fmt.Sprintf("v: %.2f, grad: %.2f", k.Val, k.Grad)
+		g.AddVertex(k._id, graph.VertexAttribute("label", label))
+
+		if k._op != "" {
+			g.AddVertex(k._id+k._op, graph.VertexAttribute("label", k._op))
+			g.AddEdge(k._id+k._op, k._id)
+		}
+	}
+
+	for k := range edges {
+		a, b := (*k)[0], (*k)[1]
+		g.AddEdge(a._id, b._id+b._op)
+	}
+
+	file, _ := os.Create("./my-graph.gv")
+	_ = DOT(g, file)
+
+}
+
+func get_nodes_edges(root *value) (map[*value]bool, map[*[]*value]bool) {
+	var nodes = make(map[*value]bool)
+	var edges = make(map[*[]*value]bool)
+
+	var build func(a *value)
+	build = func(a *value) {
+		if !nodes[a] {
+			nodes[a] = true
+			for v := range a._prev {
+				e := []*value{v, a}
+				edges[&e] = true
+				build(v)
+			}
+		}
+	}
+
+	build(root)
+	return nodes, edges
 }
