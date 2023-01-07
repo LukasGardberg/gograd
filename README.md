@@ -31,6 +31,7 @@ cmd+k, shift+v to preview a .gv file.
 - [ ] Add documentation
 - [ ] Investigare implementation of general `Pow` operation
 - [ ] Add activation function(s)
+  - [x] ReLu 
 - [ ] Add example of NN training
 - [x] Add overhead to enable import as a Go package
   - [ ] Make new release without `main.go`

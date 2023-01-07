@@ -1,1 +1,61 @@
-strict digraph { rankdir=LR;  "9aabd28e-d8ae-45dd-b667-e20dfff3aec9*" [ label="*",  shape=record, weight=0 ];  "9aabd28e-d8ae-45dd-b667-e20dfff3aec9*" -> "9aabd28e-d8ae-45dd-b667-e20dfff3aec9" [  weight=0 ];  "a73175f6-14a6-4f27-97ea-6b683072b7b0+" [ label="+",  shape=record, weight=0 ];  "a73175f6-14a6-4f27-97ea-6b683072b7b0+" -> "a73175f6-14a6-4f27-97ea-6b683072b7b0" [  weight=0 ];  "9aabd28e-d8ae-45dd-b667-e20dfff3aec9" [ label="v: 0.25, grad: 1.00",  shape=record, weight=0 ];  "9aabd28e-d8ae-45dd-b667-e20dfff3aec9" -> "a73175f6-14a6-4f27-97ea-6b683072b7b0+" [  weight=0 ];  "3268d2a4-7a20-4d0c-b087-b52498a7eac4" [ label="v: 3.95, grad: 1.00",  shape=record, weight=0 ];  "ce505d14-89b8-443d-abc3-4d403f3824d1" [ label="v: -3.00, grad: -1.23",  shape=record, weight=0 ];  "ce505d14-89b8-443d-abc3-4d403f3824d1" -> "99a8a7e3-358c-4271-b792-44393569c04d*" [  weight=0 ];  "99a8a7e3-358c-4271-b792-44393569c04d*" [ label="*",  shape=record, weight=0 ];  "99a8a7e3-358c-4271-b792-44393569c04d*" -> "99a8a7e3-358c-4271-b792-44393569c04d" [  weight=0 ];  "845cc876-2659-441e-b374-a6ae02b04a71+" [ label="+",  shape=record, weight=0 ];  "845cc876-2659-441e-b374-a6ae02b04a71+" -> "845cc876-2659-441e-b374-a6ae02b04a71" [  weight=0 ];  "266fe9f9-6fd9-424b-a034-682dca117c4f+" [ label="+",  shape=record, weight=0 ];  "266fe9f9-6fd9-424b-a034-682dca117c4f+" -> "266fe9f9-6fd9-424b-a034-682dca117c4f" [  weight=0 ];  "a73175f6-14a6-4f27-97ea-6b683072b7b0" [ label="v: 3.95, grad: 1.00",  shape=record, weight=0 ];  "a73175f6-14a6-4f27-97ea-6b683072b7b0" -> "845cc876-2659-441e-b374-a6ae02b04a71+" [  weight=0 ];  "46c1a6c7-1717-4bf4-9e30-547f68f84d2d" [ label="v: -2.00, grad: -0.13",  shape=record, weight=0 ];  "46c1a6c7-1717-4bf4-9e30-547f68f84d2d" -> "9aabd28e-d8ae-45dd-b667-e20dfff3aec9*" [  weight=0 ];  "266fe9f9-6fd9-424b-a034-682dca117c4f" [ label="v: 3.70, grad: 1.00",  shape=record, weight=0 ];  "266fe9f9-6fd9-424b-a034-682dca117c4f" -> "a73175f6-14a6-4f27-97ea-6b683072b7b0+" [  weight=0 ];  "99a8a7e3-358c-4271-b792-44393569c04d" [ label="v: 3.70, grad: 1.00",  shape=record, weight=0 ];  "99a8a7e3-358c-4271-b792-44393569c04d" -> "266fe9f9-6fd9-424b-a034-682dca117c4f+" [  weight=0 ];  "845cc876-2659-441e-b374-a6ae02b04a71" [ label="v: 3.95, grad: 1.00",  shape=record, weight=0 ];  "845cc876-2659-441e-b374-a6ae02b04a71" -> "3268d2a4-7a20-4d0c-b087-b52498a7eac4ReLu" [  weight=0 ];  "3268d2a4-7a20-4d0c-b087-b52498a7eac4ReLu" [ label="ReLu",  shape=record, weight=0 ];  "3268d2a4-7a20-4d0c-b087-b52498a7eac4ReLu" -> "3268d2a4-7a20-4d0c-b087-b52498a7eac4" [  weight=0 ];  "686caa54-49b5-4539-940a-8649b8bf5983" [ label="v: -1.23, grad: -3.00",  shape=record, weight=0 ];  "686caa54-49b5-4539-940a-8649b8bf5983" -> "99a8a7e3-358c-4271-b792-44393569c04d*" [  weight=0 ];  "8953aec6-689a-47da-a39f-83495d8255b2" [ label="v: 0.00, grad: 1.00",  shape=record, weight=0 ];  "8953aec6-689a-47da-a39f-83495d8255b2" -> "845cc876-2659-441e-b374-a6ae02b04a71+" [  weight=0 ];  "7ea5a277-037c-46c6-963b-5ac8a1b1562c" [ label="v: -0.13, grad: -2.00",  shape=record, weight=0 ];  "7ea5a277-037c-46c6-963b-5ac8a1b1562c" -> "9aabd28e-d8ae-45dd-b667-e20dfff3aec9*" [  weight=0 ];  "0f8f9afa-9ed2-4e1c-bf47-da18dbd94a49" [ label="v: 0.00, grad: 1.00",  shape=record, weight=0 ];  "0f8f9afa-9ed2-4e1c-bf47-da18dbd94a49" -> "266fe9f9-6fd9-424b-a034-682dca117c4f+" [  weight=0 ];  }
+strict digraph { 
+	rankdir=LR;  
+	"7bdf969a-5190-4a81-a8fc-3c182b456421" [ label="v: 1.00 | grad: -0.86",  shape=record, weight=0 ]; 
+	 
+	"7bdf969a-5190-4a81-a8fc-3c182b456421" -> "47bc4e75-9133-4645-85a4-9363b8a212c6*" [  weight=0 ]; 
+	 
+	"276a1477-1ae4-4280-aa60-697740747095+" [ label="+",  shape=record, weight=0 ]; 
+	 
+	"276a1477-1ae4-4280-aa60-697740747095+" -> "276a1477-1ae4-4280-aa60-697740747095" [  weight=0 ]; 
+	 
+	"49415f75-c00a-486b-ad12-e3e1f9ee0515" [ label="v: -0.86 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"49415f75-c00a-486b-ad12-e3e1f9ee0515" -> "47bc4e75-9133-4645-85a4-9363b8a212c6*" [  weight=0 ]; 
+	 
+	"86677e84-e53d-4005-83e8-f5e0b6246f52ReLu" [ label="ReLu",  shape=record, weight=0 ]; 
+	 
+	"86677e84-e53d-4005-83e8-f5e0b6246f52ReLu" -> "86677e84-e53d-4005-83e8-f5e0b6246f52" [  weight=0 ]; 
+	 
+	"ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91" [ label="v: 3.42 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91" -> "dea3737e-1fe0-4edf-9fa5-9b1416e4ac58+" [  weight=0 ]; 
+	 
+	"ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91*" [ label="*",  shape=record, weight=0 ]; 
+	 
+	"ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91*" -> "ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91" [  weight=0 ]; 
+	 
+	"152d3d84-dc67-4aaa-b44e-ee0a0f6cd01a" [ label="v: 0.00 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"152d3d84-dc67-4aaa-b44e-ee0a0f6cd01a" -> "276a1477-1ae4-4280-aa60-697740747095+" [  weight=0 ]; 
+	 
+	"dea3737e-1fe0-4edf-9fa5-9b1416e4ac58+" [ label="+",  shape=record, weight=0 ]; 
+	 
+	"dea3737e-1fe0-4edf-9fa5-9b1416e4ac58+" -> "dea3737e-1fe0-4edf-9fa5-9b1416e4ac58" [  weight=0 ]; 
+	 
+	"47bc4e75-9133-4645-85a4-9363b8a212c6" [ label="v: -0.86 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"47bc4e75-9133-4645-85a4-9363b8a212c6" -> "276a1477-1ae4-4280-aa60-697740747095+" [  weight=0 ]; 
+	 
+	"0be9f2d0-3435-4c3c-b6d7-f3648a17ca12" [ label="v: -1.71 | grad: -2.00",  shape=record, weight=0 ]; 
+	 
+	"0be9f2d0-3435-4c3c-b6d7-f3648a17ca12" -> "ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91*" [  weight=0 ]; 
+	 
+	"dea3737e-1fe0-4edf-9fa5-9b1416e4ac58" [ label="v: 2.56 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"dea3737e-1fe0-4edf-9fa5-9b1416e4ac58" -> "86677e84-e53d-4005-83e8-f5e0b6246f52ReLu" [  weight=0 ]; 
+	 
+	"47bc4e75-9133-4645-85a4-9363b8a212c6*" [ label="*",  shape=record, weight=0 ]; 
+	 
+	"47bc4e75-9133-4645-85a4-9363b8a212c6*" -> "47bc4e75-9133-4645-85a4-9363b8a212c6" [  weight=0 ]; 
+	 
+	"355ff0ac-b317-4374-9421-c9052d366794" [ label="v: -2.00 | grad: -1.71",  shape=record, weight=0 ]; 
+	 
+	"355ff0ac-b317-4374-9421-c9052d366794" -> "ea7b7f82-a086-4f2a-9a3e-92aba8eb5b91*" [  weight=0 ]; 
+	 
+	"86677e84-e53d-4005-83e8-f5e0b6246f52" [ label="v: 2.56 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"276a1477-1ae4-4280-aa60-697740747095" [ label="v: -0.86 | grad: 1.00",  shape=record, weight=0 ]; 
+	 
+	"276a1477-1ae4-4280-aa60-697740747095" -> "dea3737e-1fe0-4edf-9fa5-9b1416e4ac58+" [  weight=0 ]; 
+	 }
+	

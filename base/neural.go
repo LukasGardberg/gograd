@@ -27,12 +27,9 @@ func Neuron(n_in int) *neuron {
 
 func (neuron *neuron) Forward(inputs []float64) *value {
 	// Sum the inputs
-	sum := Value(0.0)
 	for i := 0; i < len(inputs); i++ {
-		sum = sum.Add(neuron.Weights[i].Mul(Value(inputs[i])))
+		neuron.Bias = neuron.Bias.Add(neuron.Weights[i].Mul(Value(inputs[i])))
 	}
 
-	sum = sum.Add(neuron.Bias)
-
-	return neuron.Nonlin(sum)
+	return neuron.Nonlin(neuron.Bias)
 }

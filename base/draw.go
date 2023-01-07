@@ -108,7 +108,7 @@ func Show_graph(root *value) {
 	g := graph.New(graph.StringHash, graph.Directed(), graph.Acyclic())
 
 	for k := range nodes {
-		label := fmt.Sprintf("v: %.2f, grad: %.2f", k.Val, k.Grad)
+		label := fmt.Sprintf("v: %.2f | grad: %.2f", k.Val, k.Grad)
 		g.AddVertex(k._id, graph.VertexAttribute("label", label))
 
 		if k._op != "" {
